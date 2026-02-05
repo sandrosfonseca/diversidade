@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscrição de Atividades - 15ª Semana Municipal da Diversidade Sexual</title>
+    <style>
+        /* Estilos inline */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid #e1e8ed;
+        }
+        
+        .header {
+            background: linear-gradient(90deg, #6A11CB 0%, #2575FC 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header h2 {
+            font-size: 18px;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+        
+        .progress-bar {
+            display: flex;
+            background-color: #f0f4f8;
+            padding: 0;
+        }
+        
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6c757d;
+            position: relative;
+        }
+        
+        .progress-step.active {
+            color: #6A11CB;
+            background-color: #eef2ff;
+            font-weight: 600;
+        }
+        
+        .progress-step:not(:last-child):after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid #eef2ff;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            z-index: 2;
+        }
+        
+        .form-section {
+            padding: 30px;
+            display: none;
+        }
+        
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            color: #6A11CB;
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .required:after {
+            content: " *";
+            color: #e63946;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="time"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #6A11CB;
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .checkbox-group,
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 5px;
+        }
+        
+        .checkbox-item,
+        .radio-item {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        
+        input[type="checkbox"],
+        input[type="radio"] {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .checkbox-label,
+        .radio-label {
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+        
+        .form-note {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .form-warning {
+            font-size: 14px;
+            color: #e63946;
+            background-color: #ffeaea;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            border-left: 4px solid #e63946;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f4f8;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn-prev {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        
+        .btn-prev:hover {
+            background-color: #dee2e6;
+        }
+        
+        .btn-next,
+        .btn-submit {
+            background: linear-gradient(90deg, #6A11CB 0%, #2575FC 100%);
+            color: white;
+        }
+        
+        .btn-next:hover,
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.2);
+        }
+        
+        .btn-submit {
+            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .btn-submit:hover {
+            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.2);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background-color: #f8fff9;
+            border-radius: 10px;
+            border: 1px solid #d4edda;
+            margin-top: 20px;
+        }
+        
+        .success-message h3 {
+            color: #11998e;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        .success-message p {
+            color: #495057;
+            margin-bottom: 20px;
+        }
+        
+        .success-icon {
+            font-size: 60px;
+            color: #11998e;
+            margin-bottom: 20px;
+        }
+        
+        .step-counter {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+            
+            .checkbox-group,
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        /* Cores do arco-íris para destaque */
+        .rainbow-text {
+            background: linear-gradient(90deg, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #8B00FF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: bold;
+        }
+        
+        .pride-flag {
+            height: 8px;
+            background: linear-gradient(90deg, #FF0018, #FFA52C, #FFFF41, #008018, #0000F9, #86007D);
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="pride-flag"></div>
+            <h1>FORMULÁRIO DE INSCRIÇÃO DE ATIVIDADES</h1>
+            <h2>15ª Semana Municipal da Diversidade Sexual – CONLGBT</h2>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-step active" id="step1">1. Identificação</div>
+            <div class="progress-step" id="step2">2. Atividade</div>
+            <div class="progress-step" id="step3">3. Data/Local</div>
+            <div class="progress-step" id="step4">4. Público/Acesso</div>
+            <div class="progress-step" id="step5">5. Responsável</div>
+            <div class="progress-step" id="step6">6. Declarações</div>
+        </div>
+        
+        <form id="inscricaoForm">
+            <!-- Seção 1: Identificação da Entidade -->
+            <div class="form-section active" id="section1">
+                <div class="step-counter">Seção 1 de 6</div>
+                <h2 class="section-title">SEÇÃO 1 – IDENTIFICAÇÃO DA ENTIDADE / ORGANIZAÇÃO</h2>
+                
+                <div class="form-group">
+                    <label for="nomeEntidade" class="required">1. Nome da entidade, organização ou coletivo responsável pela atividade</label>
+                    <input type="text" id="nomeEntidade" name="nomeEntidade" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">2. A entidade possui CNPJ?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="cnpjSim" name="possuiCNPJ" value="Sim" required>
+                            <label for="cnpjSim" class="radio-label">Sim</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="cnpjNao" name="possuiCNPJ" value="Não">
+                            <label for="cnpjNao" class="radio-label">Não</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="cnpjGroup" style="display: none;">
+                    <label for="cnpj">3. Se sim, informe o CNPJ (opcional)</label>
+                    <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00">
+                </div>
+                
+                <div class="form-actions">
+                    <div></div> <!-- Espaço vazio para alinhamento -->
+                    <button type="button" class="btn btn-next" onclick="nextSection(2)">Próxima Seção</button>
+                </div>
+            </div>
+            
+            <!-- Seção 2: Dados da Atividade -->
+            <div class="form-section" id="section2">
+                <div class="step-counter">Seção 2 de 6</div>
+                <h2 class="section-title">SEÇÃO 2 – DADOS DA ATIVIDADE</h2>
+                
+                <div class="form-group">
+                    <label for="tituloAtividade" class="required">4. Título da atividade</label>
+                    <input type="text" id="tituloAtividade" name="tituloAtividade" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="descricaoAtividade" class="required">5. Descrição da atividade</label>
+                    <textarea id="descricaoAtividade" name="descricaoAtividade" placeholder="Descreva brevemente a atividade, seus objetivos e como ela se relaciona com o tema da 15ª Semana Municipal da Diversidade Sexual." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">6. A atividade está alinhada ao tema da Semana Municipal da Diversidade Sexual?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="alinhadaSim" name="alinhadaTema" value="Sim" required>
+                            <label for="alinhadaSim" class="radio-label">Sim</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="alinhadaNao" name="alinhadaTema" value="Não">
+                            <label for="alinhadaNao" class="radio-label">Não</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-prev" onclick="prevSection(1)">Seção Anterior</button>
+                    <button type="button" class="btn btn-next" onclick="nextSection(3)">Próxima Seção</button>
+                </div>
+            </div>
+            
+            <!-- Seção 3: Data, Horário e Local -->
+            <div class="form-section" id="section3">
+                <div class="step-counter">Seção 3 de 6</div>
+                <h2 class="section-title">SEÇÃO 3 – DATA, HORÁRIO E LOCAL</h2>
+                
+                <div class="form-group">
+                    <label for="dataAtividade" class="required">7. Data da realização da atividade</label>
+                    <input type="date" id="dataAtividade" name="dataAtividade" required>
+                </div>
+                
+                <div class="form-group">
+                    <div style="display: flex; gap: 20px;">
+                        <div style="flex: 1;">
+                            <label for="horarioInicio" class="required">8. Horário de início</label>
+                            <input type="time" id="horarioInicio" name="horarioInicio" required>
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="horarioTermino" class="required">9. Horário de término</label>
+                            <input type="time" id="horarioTermino" name="horarioTermino" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="localAtividade" class="required">10. Local de realização da atividade</label>
+                    <input type="text" id="localAtividade" name="localAtividade" placeholder="Ex.: nome do espaço e endereço completo" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-prev" onclick="prevSection(2)">Seção Anterior</button>
+                    <button type="button" class="btn btn-next" onclick="nextSection(4)">Próxima Seção</button>
+                </div>
+            </div>
+            
+            <!-- Seção 4: Público e Acesso -->
+            <div class="form-section" id="section4">
+                <div class="step-counter">Seção 4 de 6</div>
+                <h2 class="section-title">SEÇÃO 4 – PÚBLICO E ACESSO</h2>
+                
+                <div class="form-group">
+                    <label for="publicoEstimado" class="required">12. Público estimado (número aproximado de participantes)</label>
+                    <input type="number" id="publicoEstimado" name="publicoEstimado" min="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">13. A atividade é aberta ao público em geral?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="abertaSim" name="abertaPublico" value="Sim" required>
+                            <label for="abertaSim" class="radio-label">Sim</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="abertaNao" name="abertaPublico" value="Não">
+                            <label for="abertaNao" class="radio-label">Não</label>
+                        </div>
+                    </div>
+                    <div class="form-note">Obs.: atividades fechadas deverão respeitar as regras previstas no Edital.</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">14. Público principal da atividade (pode selecionar mais de uma opção)</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="publicoGeral" name="publicoPrincipal" value="Público em geral">
+                            <label for="publicoGeral" class="checkbox-label">Público em geral</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="publicoLGBTQIA" name="publicoPrincipal" value="Comunidade LGBTQIA+">
+                            <label for="publicoLGBTQIA" class="checkbox-label">Comunidade LGBTQIA+</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="publicoJovens" name="publicoPrincipal" value="Jovens">
+                            <label for="publicoJovens" class="checkbox-label">Jovens</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="publicoIdosos" name="publicoPrincipal" value="Pessoas idosas">
+                            <label for="publicoIdosos" class="checkbox-label">Pessoas idosas</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="publicoProfissionais" name="publicoPrincipal" value="Profissionais / trabalhadores">
+                            <label for="publicoProfissionais" class="checkbox-label">Profissionais / trabalhadores</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="publicoOutro" name="publicoPrincipal" value="Outro">
+                            <label for="publicoOutro" class="checkbox-label">Outro (especificar)</label>
+                        </div>
+                    </div>
+                    <input type="text" id="publicoOutroEspecificar" name="publicoOutroEspecificar" placeholder="Especificar outro público" style="margin-top: 10px; display: none;">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-prev" onclick="prevSection(3)">Seção Anterior</button>
+                    <button type="button" class="btn btn-next" onclick="nextSection(5)">Próxima Seção</button>
+                </div>
+            </div>
+            
+            <!-- Seção 5: Acessibilidade -->
+            <div class="form-section" id="section5">
+                <div class="step-counter">Seção 5 de 6</div>
+                <h2 class="section-title">SEÇÃO 5 – ACESSIBILIDADE</h2>
+                
+                <div class="form-group">
+                    <label class="required">15. O local da atividade é acessível para pessoas com deficiência?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="acessivelSim" name="localAcessivel" value="Sim" required>
+                            <label for="acessivelSim" class="radio-label">Sim</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="acessivelNao" name="localAcessivel" value="Não">
+                            <label for="acessivelNao" class="radio-label">Não</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="acessivelParcial" name="localAcessivel" value="Parcialmente">
+                            <label for="acessivelParcial" class="radio-label">Parcialmente</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">16. Quais recursos de acessibilidade estarão disponíveis no local da atividade?</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="recursoCadeirantes" name="recursosAcessibilidade" value="Acesso para cadeirantes">
+                            <label for="recursoCadeirantes" class="checkbox-label">Acesso para cadeirantes</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="recursoBanheiro" name="recursosAcessibilidade" value="Banheiro acessível">
+                            <label for="recursoBanheiro" class="checkbox-label">Banheiro acessível</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="recursoComunicacao" name="recursosAcessibilidade" value="Comunicação acessível (material visual, linguagem simples, etc.)">
+                            <label for="recursoComunicacao" class="checkbox-label">Comunicação acessível (material visual, linguagem simples, etc.)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="recursoLibras" name="recursosAcessibilidade" value="Intérprete de Libras providenciado pela entidade">
+                            <label for="recursoLibras" class="checkbox-label">Intérprete de Libras providenciado pela entidade</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="recursoOutro" name="recursosAcessibilidade" value="Outro(s) recurso(s) de acessibilidade">
+                            <label for="recursoOutro" class="checkbox-label">Outro(s) recurso(s) de acessibilidade (especificar)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="recursoNenhum" name="recursosAcessibilidade" value="Nenhum recurso de acessibilidade disponível">
+                            <label for="recursoNenhum" class="checkbox-label">Nenhum recurso de acessibilidade disponível</label>
+                        </div>
+                    </div>
+                    <input type="text" id="recursoOutroEspecificar" name="recursoOutroEspecificar" placeholder="Especificar outro recurso" style="margin-top: 10px; display: none;">
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">17. Há necessidade de Intérprete de Libras para a atividade?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="librasSim" name="necessidadeLibras" value="Sim" required>
+                            <label for="librasSim" class="radio-label">Sim</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="librasNao" name="necessidadeLibras" value="Não">
+                            <label for="librasNao" class="radio-label">Não</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="librasNaoSei" name="necessidadeLibras" value="Não sei informar neste momento">
+                            <label for="librasNaoSei" class="radio-label">Não sei informar neste momento</label>
+                        </div>
+                    </div>
+                    <div class="form-warning">
+                        A solicitação de Intérprete de Libras será utilizada pelo CONLGBT para fins de articulação institucional, não constituindo garantia de atendimento.
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-prev" onclick="prevSection(4)">Seção Anterior</button>
+                    <button type="button" class="btn btn-next" onclick="nextSection(6)">Próxima Seção</button>
+                </div>
+            </div>
+            
+            <!-- Seção 6: Responsável pela Atividade e Declarações -->
+            <div class="form-section" id="section6">
+                <div class="step-counter">Seção 6 de 6</div>
+                <h2 class="section-title">SEÇÃO 6 – RESPONSÁVEL PELA ATIVIDADE</h2>
+                
+                <div class="form-group">
+                    <label for="nomeResponsavel" class="required">18. Nome do(a) responsável pela atividade</label>
+                    <input type="text" id="nomeResponsavel" name="nomeResponsavel" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="emailResponsavel" class="required">19. E-mail do(a) responsável</label>
+                    <input type="email" id="emailResponsavel" name="emailResponsavel" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telefoneResponsavel" class="required">20. Telefone celular do(a) responsável</label>
+                    <input type="tel" id="telefoneResponsavel" name="telefoneResponsavel" required>
+                </div>
+                
+                <h2 class="section-title" style="margin-top: 40px;">SEÇÃO 7 – DECLARAÇÕES OBRIGATÓRIAS</h2>
+                
+                <div class="form-group">
+                    <label class="required">21. Declaração de ciência e concordância</label>
+                    <div class="checkbox-group" style="flex-direction: column; gap: 10px;">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="declaracao1" name="declaracao" value="concorda1" required>
+                            <label for="declaracao1" class="checkbox-label">Declaro que li e concordo com todas as regras do Edital nº 001/2026 – CONLGBT, assumindo total responsabilidade pela organização, execução, segurança, legalidade e gratuidade da atividade inscrita, bem como pelo cumprimento das legislações municipais, estaduais e federais aplicáveis.</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="declaracao2" name="declaracao" value="concorda2" required>
+                            <label for="declaracao2" class="checkbox-label">Declaro estar ciente de que é proibida qualquer forma de discriminação, bem como a cobrança de valores para participação na atividade.</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="declaracao3" name="declaracao" value="concorda3" required>
+                            <label for="declaracao3" class="checkbox-label">Declaro estar ciente de que, em eventos festivos ou similares, é proibida a venda, o fornecimento ou o incentivo ao consumo de bebidas alcoólicas, drogas ilícitas ou substâncias proibidas por lei por menores de 18 anos, sendo essa responsabilidade exclusiva da entidade organizadora.</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-prev" onclick="prevSection(5)">Seção Anterior</button>
+                    <button type="submit" class="btn btn-submit" id="submitBtn">Enviar Inscrição</button>
+                </div>
+            </div>
+        </form>
+        
+        <div class="success-message" id="successMessage">
+            <div class="success-icon">✓</div>
+            <h3>Inscrição enviada com sucesso!</h3>
+            <p>Obrigado por inscrever sua atividade na 15ª Semana Municipal da Diversidade Sexual.</p>
+            <p>Em breve entraremos em contato pelo e-mail informado.</p>
+            <button type="button" class="btn" onclick="location.reload()" style="margin-top: 20px; background: #6A11CB; color: white;">Nova Inscrição</button>
+        </div>
+    </div>
+
+    <script>
+        // Variáveis globais
+        let currentSection = 1;
+        
+        // Configuração do Google Apps Script (substitua pela URL do seu web app)
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyKqjq6Rz6A5YV7g7Mh7DvJ8t6F5Xq9Q6J7Z8H9I0/exec';
+        
+        // Funções de navegação entre seções
+        function showSection(sectionNumber) {
+            // Esconder todas as seções
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Mostrar a seção atual
+            document.getElementById(`section${sectionNumber}`).classList.add('active');
+            
+            // Atualizar a barra de progresso
+            document.querySelectorAll('.progress-step').forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            for (let i = 1; i <= sectionNumber; i++) {
+                document.getElementById(`step${i}`).classList.add('active');
+            }
+            
+            currentSection = sectionNumber;
+        }
+        
+        function nextSection(next) {
+            // Validar a seção atual antes de prosseguir
+            if (validateSection(currentSection)) {
+                showSection(next);
+            }
+        }
+        
+        function prevSection(prev) {
+            showSection(prev);
+        }
+        
+        // Validação de seção
+        function validateSection(sectionNumber) {
+            const section = document.getElementById(`section${sectionNumber}`);
+            const requiredInputs = section.querySelectorAll('[required]');
+            let isValid = true;
+            
+            for (let input of requiredInputs) {
+                if (input.type === 'checkbox' || input.type === 'radio') {
+                    // Para checkboxes e radios, verificar se pelo menos um está selecionado
+                    const name = input.name;
+                    const checked = section.querySelectorAll(`input[name="${name}"]:checked`).length > 0;
+                    
+                    if (!checked) {
+                        isValid = false;
+                        highlightError(input);
+                    } else {
+                        removeHighlight(input);
+                    }
+                } else {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        highlightError(input);
+                    } else {
+                        removeHighlight(input);
+                    }
+                }
+            }
+            
+            if (!isValid) {
+                alert('Por favor, preencha todos os campos obrigatórios antes de prosseguir.');
+            }
+            
+            return isValid;
+        }
+        
+        function highlightError(input) {
+            if (input.type === 'checkbox' || input.type === 'radio') {
+                const labels = document.querySelectorAll(`label[for="${input.id}"]`);
+                labels.forEach(label => {
+                    label.style.color = '#e63946';
+                });
+            } else {
+                input.style.borderColor = '#e63946';
+                input.style.boxShadow = '0 0 0 3px rgba(230, 57, 70, 0.1)';
+            }
+        }
+        
+        function removeHighlight(input) {
+            if (input.type === 'checkbox' || input.type === 'radio') {
+                const labels = document.querySelectorAll(`label[for="${input.id}"]`);
+                labels.forEach(label => {
+                    label.style.color = '';
+                });
+            } else {
+                input.style.borderColor = '';
+                input.style.boxShadow = '';
+            }
+        }
+        
+        // Mostrar/ocultar campos condicionais
+        document.getElementById('cnpjSim').addEventListener('change', function() {
+            document.getElementById('cnpjGroup').style.display = this.checked ? 'block' : 'none';
+        });
+        
+        document.getElementById('cnpjNao').addEventListener('change', function() {
+            document.getElementById('cnpjGroup').style.display = this.checked ? 'none' : 'block';
+        });
+        
+        document.getElementById('publicoOutro').addEventListener('change', function() {
+            document.getElementById('publicoOutroEspecificar').style.display = this.checked ? 'block' : 'none';
+            if (this.checked) {
+                document.getElementById('publicoOutroEspecificar').required = true;
+            } else {
+                document.getElementById('publicoOutroEspecificar').required = false;
+            }
+        });
+        
+        document.getElementById('recursoOutro').addEventListener('change', function() {
+            document.getElementById('recursoOutroEspecificar').style.display = this.checked ? 'block' : 'none';
+            if (this.checked) {
+                document.getElementById('recursoOutroEspecificar').required = true;
+            } else {
+                document.getElementById('recursoOutroEspecificar').required = false;
+            }
+        });
+        
+        // Envio do formulário para o Google Sheets
+        document.getElementById('inscricaoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validar a última seção
+            if (!validateSection(6)) {
+                alert('Por favor, preencha todos os campos obrigatórios antes de enviar o formulário.');
+                return;
+            }
+            
+            // Desabilitar o botão de envio
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+            
+            // Coletar todos os dados do formulário
+            const formData = new FormData(this);
+            
+            // Processar campos de múltipla escolha
+            const publicoPrincipal = [];
+            document.querySelectorAll('input[name="publicoPrincipal"]:checked').forEach(checkbox => {
+                let value = checkbox.value;
+                if (checkbox.id === 'publicoOutro' && checkbox.checked) {
+                    value += ': ' + document.getElementById('publicoOutroEspecificar').value;
+                }
+                publicoPrincipal.push(value);
+            });
+            
+            const recursosAcessibilidade = [];
+            document.querySelectorAll('input[name="recursosAcessibilidade"]:checked').forEach(checkbox => {
+                let value = checkbox.value;
+                if (checkbox.id === 'recursoOutro' && checkbox.checked) {
+                    value += ': ' + document.getElementById('recursoOutroEspecificar').value;
+                }
+                recursosAcessibilidade.push(value);
+            });
+            
+            // Criar objeto com todos os dados
+            const data = {
+                timestamp: new Date().toLocaleString('pt-BR'),
+                nomeEntidade: formData.get('nomeEntidade'),
+                possuiCNPJ: formData.get('possuiCNPJ'),
+                cnpj: formData.get('cnpj') || '',
+                tituloAtividade: formData.get('tituloAtividade'),
+                descricaoAtividade: formData.get('descricaoAtividade'),
+                alinhadaTema: formData.get('alinhadaTema'),
+                dataAtividade: formData.get('dataAtividade'),
+                horarioInicio: formData.get('horarioInicio'),
+                horarioTermino: formData.get('horarioTermino'),
+                localAtividade: formData.get('localAtividade'),
+                publicoEstimado: formData.get('publicoEstimado'),
+                abertaPublico: formData.get('abertaPublico'),
+                publicoPrincipal: publicoPrincipal.join(', '),
+                localAcessivel: formData.get('localAcessivel'),
+                recursosAcessibilidade: recursosAcessibilidade.join(', '),
+                necessidadeLibras: formData.get('necessidadeLibras'),
+                nomeResponsavel: formData.get('nomeResponsavel'),
+                emailResponsavel: formData.get('emailResponsavel'),
+                telefoneResponsavel: formData.get('telefoneResponsavel'),
+                declaracao: 'Concordou com todas as declarações'
+            };
+            
+            // Enviar dados para o Google Sheets via Google Apps Script
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                // Mostrar mensagem de sucesso
+                document.getElementById('inscricaoForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Ocorreu um erro ao enviar o formulário. Tente novamente.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Inscrição';
+            });
+        });
+        
+        // Inicializar data mínima como hoje
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('dataAtividade').min = today;
+    </script>
+</body>
+</html>
