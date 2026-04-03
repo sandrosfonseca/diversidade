@@ -1,4 +1,5 @@
-const deadline = new Date('2026-04-03T00:25:00-03:00');
+const DEFAULT_DEADLINE = new Date('2026-04-03T00:25:00-03:00');
+let deadline = DEFAULT_DEADLINE;
 
 // Variáveis globais
 let currentSection = 1;
@@ -7,15 +8,122 @@ let isFormClosed = false;
 // Configuração do Google Apps Script (substitua pela URL do seu web app)
 const scriptURL = 'https://script.google.com/macros/s/AKfycbyTwLQ0NvNPuffO3Bd-aeYIdeHMyH65eFhJmL1jYaTyoPIHg5NyZxgvM1DU2twu7aF1Jw/exec';
 
+// Função para carregar o prazo salvo do localStorage
+function loadDeadline() {
+    const savedDeadline = localStorage.getItem('deadlineInscricoes');
+    if (savedDeadline) {
+        deadline = new Date(savedDeadline);
+    } else {
+        deadline = DEFAULT_DEADLINE;
+    }
+}
+
+// Função para salvar o prazo no localStorage
+function saveDeadline() {
+    const dataInput = document.getElementById('configData').value;
+    const horaInput = document.getElementById('configHora').value;
+    const messageEl = document.getElementById('configMessage');
+    
+    if (!dataInput || !horaInput) {
+        messageEl.className = 'config-message error';
+        messageEl.textContent = 'Por favor, preencha a data e a hora de término.';
+        return;
+    }
+    
+    // Criar data no fuso horário de Brasília (UTC-3)
+    const [year, month, day] = dataInput.split('-').map(Number);
+    const [hours, minutes] = horaInput.split(':').map(Number);
+    
+    // Criar data considerando o fuso de Brasília
+    const newDeadline = new Date(Date.UTC(year, month - 1, day, hours + 3, minutes, 0));
+    
+    // Validar se a data é válida
+    if (isNaN(newDeadline.getTime())) {
+        messageEl.className = 'config-message error';
+        messageEl.textContent = 'Data ou hora inválida. Por favor, verifique os valores informados.';
+        return;
+    }
+    
+    // Salvar no localStorage
+    localStorage.setItem('deadlineInscricoes', newDeadline.toISOString());
+    deadline = newDeadline;
+    
+    // Mostrar mensagem de sucesso
+    messageEl.className = 'config-message success';
+    messageEl.textContent = 'Prazo configurado com sucesso! A página será recarregada.';
+    
+    // Recarregar a página após 1.5 segundos para aplicar as mudanças
+    setTimeout(() => {
+        location.reload();
+    }, 1500);
+}
+
+// Função para restaurar o prazo padrão
+function resetDeadline() {
+    localStorage.removeItem('deadlineInscricoes');
+    deadline = DEFAULT_DEADLINE;
+    
+    const messageEl = document.getElementById('configMessage');
+    messageEl.className = 'config-message success';
+    messageEl.textContent = 'Prazo restaurado para o valor padrão. A página será recarregada.';
+    
+    setTimeout(() => {
+        location.reload();
+    }, 1500);
+}
+
+// Função para mostrar/ocultar o painel de configuração
+function toggleConfigPanel() {
+    const panel = document.getElementById('configPanel');
+    const overlay = document.getElementById('configOverlay');
+    
+    if (panel.style.display === 'block') {
+        panel.style.display = 'none';
+        overlay.style.display = 'none';
+    } else {
+        // Preencher os campos com o valor atual do prazo
+        const currentDeadline = deadline;
+        const year = currentDeadline.getUTCFullYear();
+        const month = String(currentDeadline.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(currentDeadline.getUTCDate()).padStart(2, '0');
+        const hours = String(currentDeadline.getUTCHours() - 3).padStart(2, '0'); // Ajustar para Brasília
+        const minutes = String(currentDeadline.getUTCMinutes()).padStart(2, '0');
+        
+        document.getElementById('configData').value = `${year}-${month}-${day}`;
+        document.getElementById('configHora').value = `${hours}:${minutes}`;
+        
+        panel.style.display = 'block';
+        
+        // Criar overlay se não existir
+        if (!overlay) {
+            const newOverlay = document.createElement('div');
+            newOverlay.id = 'configOverlay';
+            newOverlay.className = 'config-overlay';
+            newOverlay.onclick = toggleConfigPanel;
+            document.body.appendChild(newOverlay);
+        }
+        document.getElementById('configOverlay').style.display = 'block';
+        
+        // Limpar mensagens anteriores
+        document.getElementById('configMessage').className = 'config-message';
+        document.getElementById('configMessage').textContent = '';
+    }
+}
+
 // Função para verificar se o prazo expirou
 function checkDeadline() {
     const now = new Date();
+    
+    // Formatar data do deadline para exibição (horário de Brasília)
+    const deadlineDate = deadline.toLocaleDateString('pt-BR', {timeZone: 'America/Sao_Paulo'});
+    const deadlineTime = deadline.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo'});
+    
     if (now > deadline) {
         // Formulário encerrado
         isFormClosed = true;
         document.getElementById('formContent').style.display = 'none';
         document.getElementById('closedMessage').style.display = 'block';
-        document.getElementById('deadlineBanner').textContent = '⏰ Inscrições encerradas desde 03/04/2026 às 00:50';
+        document.getElementById('deadlineBanner').textContent = `⏰ Inscrições encerradas desde ${deadlineDate} às ${deadlineTime}`;
         document.getElementById('deadlineBanner').classList.add('closed');
         
         // Calcular quanto tempo passou desde o encerramento
@@ -26,6 +134,9 @@ function checkDeadline() {
         return true;
     } else {
         // Formulário ainda aberto
+        // Atualizar banner com a data de término
+        document.getElementById('deadlineBanner').textContent = `⏰ Inscrições abertas até ${deadlineDate} às ${deadlineTime}`;
+        
         // Calcular contagem regressiva
         updateCountdown();
         // Atualizar a cada segundo
@@ -96,6 +207,9 @@ function updateCountdown() {
 
 // Verificar prazo ao carregar a página
 window.onload = function() {
+    // Carregar o prazo salvo (ou usar o padrão)
+    loadDeadline();
+    
     const isClosed = checkDeadline();
     
     if (!isClosed) {
