@@ -1,4 +1,4 @@
-const deadline = new Date('2026-02-09T07:55:00');
+const deadline = new Date('2026-04-03T00:25:00-03:00');
 
 // Variáveis globais
 let currentSection = 1;
@@ -15,7 +15,7 @@ if (now > deadline) {
 isFormClosed = true;
 document.getElementById('formContent').style.display = 'none';
 document.getElementById('closedMessage').style.display = 'block';
-document.getElementById('deadlineBanner').textContent = '⏰ Inscrições encerradas desde 06/02/2026 às 10:10';
+document.getElementById('deadlineBanner').textContent = '⏰ Inscrições encerradas desde 03/04/2026 às 00:25';
 document.getElementById('deadlineBanner').classList.add('closed');
 
 // Calcular quanto tempo passou desde o encerramento
@@ -320,8 +320,8 @@ input.style.boxShadow = '';
 }
 }
 <script>
-// Configuração da data de encerramento (06/02/2026 às 23:59)
-const deadline = new Date('2026-02-09T07:55:00');
+// Configuração da data de encerramento (03/04/2026 às 00:25 horário de brasilia)
+const deadline = new Date('2026-04-03T00:25:00-03:00');
 
 // Variáveis globais
 let currentSection = 1;
@@ -338,7 +338,7 @@ if (now > deadline) {
 isFormClosed = true;
 document.getElementById('formContent').style.display = 'none';
 document.getElementById('closedMessage').style.display = 'block';
-document.getElementById('deadlineBanner').textContent = '⏰ Inscrições encerradas desde 06/02/2026 às 10:10';
+document.getElementById('deadlineBanner').textContent = '⏰ Inscrições encerradas desde 03/04/2026 às 00:25';
 document.getElementById('deadlineBanner').classList.add('closed');
 
 // Calcular quanto tempo passou desde o encerramento
