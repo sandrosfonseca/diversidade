@@ -8,8 +8,37 @@
 </head>
 <body>
     <div class="container">
+        <!-- Botão de Configuração (visível apenas para administradores) -->
+        <button class="btn-config" id="btnConfig" onclick="toggleConfigPanel()" title="Configurar Data de Término">⚙️ Configurar Prazo</button>
+        
+        <!-- Painel de Configuração -->
+        <div class="config-panel" id="configPanel">
+            <div class="config-header">
+                <h3>Configurar Data de Término das Inscrições</h3>
+                <button class="btn-close" onclick="toggleConfigPanel()">×</button>
+            </div>
+            <div class="config-content">
+                <p style="margin-bottom: 15px; color: #6c757d; font-size: 14px;">
+                    Informe a data e hora de término das inscrições (Horário de Brasília):
+                </p>
+                <div class="form-group">
+                    <label for="configData">Data de término:</label>
+                    <input type="date" id="configData" required>
+                </div>
+                <div class="form-group">
+                    <label for="configHora">Hora de término:</label>
+                    <input type="time" id="configHora" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-prev" onclick="resetDeadline()">Restaurar Padrão</button>
+                    <button type="button" class="btn btn-submit" onclick="saveDeadline()">Salvar Configuração</button>
+                </div>
+                <div id="configMessage" class="config-message"></div>
+            </div>
+        </div>
+        
         <div class="deadline-banner" id="deadlineBanner">
-            ⏰ Inscrições abertas até 03/04/2026 às 00:25
+            ⏰ Carregando informações do prazo...
         </div>
         
         <div class="header">

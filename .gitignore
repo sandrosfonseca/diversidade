@@ -1,1 +1,1 @@
-(js/script.js is a source file, no build artifacts, dependencies, or temp files in the changes - no .gitignore needed)
+Nothing to output - the file changes consist only of source/config files (.md, .css, .html, .js) with no build artifacts, dependencies, or temporary files that need to be ignored.
