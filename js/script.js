@@ -15,7 +15,7 @@ function checkDeadline() {
         isFormClosed = true;
         document.getElementById('formContent').style.display = 'none';
         document.getElementById('closedMessage').style.display = 'block';
-        document.getElementById('deadlineBanner').textContent = '⏰ Inscrições encerradas desde 03/04/2026 às 00:25';
+        document.getElementById('deadlineBanner').textContent = '⏰ Inscrições encerradas desde 03/04/2026 às 00:50';
         document.getElementById('deadlineBanner').classList.add('closed');
         
         // Calcular quanto tempo passou desde o encerramento
